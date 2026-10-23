@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-bottle-green: #1F3D2B;
+    --color-burgundy: #5A1A24;
+    --color-parchment: #F5EFE0;
+    --color-cream: #FBF7EC;
+    --color-ink: #1B2432;
+    --color-brass: #A98A4F;
+    --color-brass-light: #C2A76D;
+    --color-stone: #8A8576;
+    --color-border: #E3D9C6;
+  }
+
+  body {
+    background-color: var(--color-parchment);
+    color: var(--color-ink);
+    font-family: 'EB Garamond', Garamond, Georgia, serif;
+    background-image: radial-gradient(#d8cca8 0.75px, transparent 0.75px), radial-gradient(#e0d6b6 0.75px, #F5EFE0 0.75px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+
+  .font-crest {
+    font-family: 'Cinzel', 'Cormorant Garamond', serif;
+  }
+}
+
+/* Double-rule divider for heritage print look */
+.double-rule {
+  border-top: 1px solid #A98A4F;
+  border-bottom: 1px solid #A98A4F;
+  height: 4px;
+}
+
+.brass-border {
+  border: 1px solid #D5C7AA;
+}
+
+.brass-border-subtle {
+  border: 1px solid #E5DCC9;
+}
+
+/* Print styles for university shortlist export */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #111111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-page-break {
+    page-break-after: always;
+  }
+}

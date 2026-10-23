@@ -1,0 +1,6 @@
+{
+  "name": "UniMatch NG",
+  "description": "Find your place among Nigeria's finest institutions: a university recommendation platform for aspiring Nigerian undergraduates.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
