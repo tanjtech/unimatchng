@@ -1,147 +1,191 @@
 # UniMatch NG 🏛️
-## https://unimatchng.vercel.app/
+### Find your place among Nigeria's finest institutions
 
-> *"Find your place among Nigeria's finest institutions"*
+[![MLH Hacktoberfest](https://img.shields.io/badge/MLH-Hacktoberfest_2026-ff6b4a?style=flat-square&logo=majorleaguehacking)](https://mlh.io/)
+[![Model](https://img.shields.io/badge/Model-Google_Gemma_4_(Open_Weights)-4285F4?style=flat-square&logo=google)](https://ai.google.dev/gemma)
+[![Gemma License](https://img.shields.io/badge/Model_Terms-Gemma_Terms_of_Use-0F9D58?style=flat-square)](https://ai.google.dev/gemma/terms)
+[![Deployment](https://img.shields.io/badge/Live_App-unimatchng.vercel.app-1F3D2B?style=flat-square)](https://unimatchng.vercel.app/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
-UniMatch NG is an elite university recommendation platform designed specifically for aspiring Nigerian undergraduates. Powered by Google's Gemma 4 on Backboard (with automatic secondary resilience via Gemini), UniMatch NG provides deterministic, multi-factor academic appraisals across Nigerian Federal, State, and Premier Private institutions.
+**Live Web Application:** [https://unimatchng.vercel.app/](https://unimatchng.vercel.app/)
 
----
-
-## Key Features
-
-- **Heritage "Old Money" Aesthetic**: Visual design inspired by classic collegiate prospectuses, private libraries, and vintage university registers (bottle green `#1F3D2B`, deep burgundy `#5A1A24`, warm cream `#FBF7EC`, parchment `#F5EFE0`, and antique brass `#A98A4F`).
-- **Empirical 4-Stage Candidate Dossier**:
-  - **Section I**: Candidate Identity & Class Track (Science, Arts, Commercial, Social Science).
-  - **Section II**: WAEC/NECO O'Level Credit Analysis (live calculation of credits A1–C6 and English/Maths prerequisites) & JAMB UTME score (0–400).
-  - **Section III**: Vocational Ambition, Academic Interests, and Target Department (or automatic recommendation of 3 best-fit courses).
-  - **Section IV**: Institutional Preferences (Federal, State, Private, Budget tolerance).
-- **Deterministic 100-Point Scoring Algorithm (`/lib/scoring`)**:
-  - Cut-off Fit: **30%**
-  - Course & Department Strength: **25%**
-  - Tuition & Fee Affordability: **15%**
-  - Campus Ambiance & Student Life: **10%**
-  - Reviews & Institutional Reputation: **10%**
-  - Location & Hostel Accommodation: **10%**
-- **Strict Zod Validation (`/lib/schemas`)**: Every client form input, API request, and AI model response is strictly validated at runtime.
-- **Backboard Integration with Live Web Search (`/lib/backboard`)**:
-  - Secure server-side route handlers (`/api/recommendations`, `/api/university/detail`, `/api/counsellor/chat`).
-  - Thread persistence across sessions so follow-up inquiries to the admissions counsellor maintain complete candidate context.
-  - Live web search enabled on university detail queries for contemporary post-UTME updates and tuition figures.
-  - Exponential backoff retry (up to 3 attempts) and markdown code fence stripping.
-- **Two-Tier Caching System (`/lib/cache`)**:
-  - **Server-Side**: SHA-256 hash keying with Upstash Redis adapter and In-Memory fallback (TTL configurable via `CACHE_TTL_DAYS`).
-  - **Client-Side**: Versioned local storage under `"unimatch_v1_"`, offline preservation, "From archive" indicator, and one-click "Refresh Appraisal" bypass.
-- **Archived Shortlist & Ledger (`/shortlist`)**:
-  - Up to 3 institutions compared side-by-side in a comparative ledger.
-  - Personal candidate notes per university.
-  - Export as official **PDF** (via custom `@media print` print stylesheet) or **JSON**.
+> *"Whether you seek the venerable quadrangles of Ibadan, the architectural majesty of Ife, the rigorous halls of Zaria, or the focused scholarship of premier private foundations, UniMatch NG aligns your UTME scores, O'level credits, and career ambitions with institutional excellence."*
 
 ---
 
-## Environment Variables
+## 🏆 Hackathon Context: MLH Hacktoberfest (Open Source & Open Weight AI)
 
-Copy `.env.example` to `.env`:
+This project was built for the **MLH (Major League Hacking) Hacktoberfest Hackathon**, celebrating the power and transparency of **Open Source and Open-Weight AI**.
+
+### The Societal Challenge in Nigeria
+Every year, over **1.8 million Nigerian secondary school leavers** sit for the Joint Admissions and Matriculation Board (JAMB) Unified Tertiary Matriculation Examination (UTME), competing for fewer than 600,000 available university admissions. 
+- Disparate departmental cut-offs, varying faculty quota formulas (50% UTME / 30% Post-UTME / 20% O'Level), and volatile tuition structures create severe information asymmetry.
+- Many qualified applicants pick mismatched institutions or combinations, forfeiting academic years and falling into despair.
+- Commercial university counselling services in Nigeria charge high consultation fees that everyday families cannot afford.
+
+### The Open-Weight AI Solution
+**UniMatch NG** democratizes university guidance by putting an expert academic counsellor directly into the hands of every Nigerian student for free. Powered by Google's **Gemma** open-weight model family and a deterministic 100-point scoring engine, UniMatch NG offers transparent, reproducible, and verifiable institutional matching.
+
+---
+
+## 🤖 Open-Weight Model Attribution & Terms
+
+### Foundation Model: Google Gemma
+UniMatch NG runs on **Gemma 4** (configured via Backboard API with Gemma open model runtime):
+- **Model Creator:** Google DeepMind and Google Research.
+- **Model Family:** [Gemma Open Models](https://ai.google.dev/gemma) — Google's lightweight, state-of-the-art open-weight models built from the same research, datasets, and technology used to create Gemini.
+- **Weight Availability:** Gemma weights are openly available to the global developer community on [Hugging Face (`google/gemma`)](https://huggingface.co/google) and [Kaggle Models](https://www.kaggle.com/models/google/gemma).
+
+### Model Licensing & Responsible Use
+- **License / Terms of Use:** The underlying model is governed by the official **[Gemma Terms of Use](https://ai.google.dev/gemma/terms)** and the **[Gemma Open Model License Agreement](https://ai.google.dev/gemma/terms)**.
+- **Responsible AI:** Inference adheres to Google's [Responsible Generative AI Toolkit](https://ai.google.dev/gemma/docs/core_concepts).
+- **Why Open-Weights Matter Here:** Open weights ensure that educational advisory algorithms can be openly inspected, evaluated for demographic fairness, and self-hosted on regional infrastructure across Africa without reliance on closed corporate black boxes.
+
+---
+
+## 🏛️ Distinctive Features & Aesthetic Philosophy
+
+### 1. Heritage "Old Money" Collegiate Aesthetic
+Unlike typical cookie-cutter SaaS products with neon purple gradients and generic AI pills, UniMatch NG adopts the tactile gravitas of a vintage Oxbridge/Commonwealth academic prospectus:
+- **Curated Palette:** Bottle green (`#1F3D2B`), deep burgundy (`#5A1A24`), warm parchment (`#F5EFE0`), cream surfaces (`#FBF7EC`), navy ink (`#1B2432`), and antique brass accents (`#A98A4F`).
+- **Classic Typography:** Cormorant Garamond, Cinzel, and EB Garamond with small caps and Roman numerals (Steps I–IV, Ranks I–X).
+- **Prospectus Details:** Monogram crest (`UM`), double-rule brass dividers, fine paper grain texture, and unboxed typographic metadata.
+
+### 2. Empirical 4-Stage Candidate Dossier (`/profile`)
+- **Section I (Identity):** Full name, age, and academic track (*Science*, *Arts*, *Commercial*, *Social Science*).
+- **Section II (Academics):** 
+  - Dynamic WAEC/NECO O'Level credit ledger (up to 9 subjects with grades A1–F9).
+  - Live calculation of credits (A1–C6) and automated verification of English and Mathematics matriculation requirements.
+  - JAMB UTME score (0–400) with "Awaiting / N/A" toggle.
+- **Section III (Vocation):** Free-form academic interests, dream vocation, and target department (if undecided, Gemma formulates 3 best-fit degree pathways).
+- **Section IV (Preferences):** Institutional preference (*Federal*, *State*, *Private*) and budget tolerance. Auto-saves draft to client cache as the student types.
+
+### 3. Deterministic 100-Point Scoring Algorithm (`/lib/scoring`)
+To prevent "hallucinated rankings", Gemma outputs granular sub-scores that are deterministically synthesized in code:
+$$\text{Score} = 0.30 \cdot \text{CutOff} + 0.25 \cdot \text{Faculty} + 0.15 \cdot \text{Fees} + 0.10 \cdot \text{Ambiance} + 0.10 \cdot \text{Reputation} + 0.10 \cdot \text{Hostels}$$
+- Institutions are assigned **Safe**, **Match**, or **Reach** probability indicators.
+- Filter and sort bar: filter by institution type, admission likelihood, state, or score.
+
+### 4. Verified University Archives & Counsellor Chat (`/university/[slug]`)
+- Contemporary post-UTME screening procedures, O'Level subject combinations, and Naira fee schedules (Acceptance, Tuition, Faculty dues, and Hostels).
+- Interactive **"Ask the Counsellor"** chat box powered by Gemma with thread session persistence.
+
+### 5. Archived Shortlist & Ledger (`/shortlist`)
+- Side-by-side comparison of up to 3 institutions in a tabular ledger.
+- Persistent candidate notes per institution stored locally.
+- **Dual Export:** Export as official **PDF** (via dedicated `@media print` admissions ledger stylesheet) or download clean **JSON**.
+
+---
+
+## 🏗️ Architecture & Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                       Client Browser                        │
+│   (React 19 + TypeScript + Tailwind CSS + IndexedDB/Cache)  │
+└──────────────┬──────────────────────────────▲───────────────┘
+               │                              │
+     POST /api/recommendations        JSON Response /
+     POST /api/university/detail      Client Fallback
+               │                              │
+┌──────────────▼──────────────────────────────┴───────────────┐
+│               Serverless / Express Runtime                  │
+│       (/api/index.ts on Vercel / server.ts on Node)         │
+├─────────────────────────────────────────────────────────────┤
+│  • Zod Validation Layer (/lib/schemas)                      │
+│  • Rate Limiting (Sliding Window per IP)                    │
+│  • Deterministic Scoring Function (/lib/scoring)            │
+│  • Two-Tier Cache: Upstash Redis REST / In-Memory           │
+│  • SHA-256 Hash Normalization (/lib/cache)                  │
+└──────────────┬──────────────────────────────▲───────────────┘
+               │                              │
+      POST /threads/messages         Structured JSON
+               │                              │
+┌──────────────▼──────────────────────────────┴───────────────┐
+│                 Google Gemma 4 on Backboard                 │
+│               (Open-Weight LLM Inference)                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory (refer to `.env.example`):
 
 ```bash
 cp .env.example .env
 ```
 
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `BACKBOARD_API_KEY` | Backboard API key for running Gemma 4 | *(Required for Backboard)* |
-| `BACKBOARD_BASE_URL` | Base URL for the Backboard REST API | `https://app.backboard.io/api` |
-| `BACKBOARD_LLM_PROVIDER` | LLM provider on Backboard | `google` |
-| `BACKBOARD_MODEL_NAME` | Model identifier | `gemma-4` |
-| `CACHE_TTL_DAYS` | Cache retention in days for AI responses | `7` |
-| `UPSTASH_REDIS_REST_URL` | Upstash Redis REST endpoint (Optional) | `""` |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST bearer token (Optional) | `""` |
-| `GEMINI_API_KEY` | Secondary fallback API key for Gemini | *(Optional)* |
-| `PORT` | Local server port | `3000` |
+| Variable | Required | Description | Default |
+| :--- | :---: | :--- | :--- |
+| `BACKBOARD_API_KEY` | Optional* | API key for running Gemma 4 on Backboard | `""` |
+| `BACKBOARD_BASE_URL` | Optional | Backboard API base endpoint | `https://app.backboard.io/api` |
+| `BACKBOARD_LLM_PROVIDER` | Optional | Provider identifier | `google` |
+| `BACKBOARD_MODEL_NAME` | Optional | Model identifier | `gemma-4` |
+| `CACHE_TTL_DAYS` | Optional | Server cache retention in days | `7` |
+| `UPSTASH_REDIS_REST_URL` | Optional | Upstash Redis REST URL for distributed cache | `""` |
+| `UPSTASH_REDIS_REST_TOKEN` | Optional | Upstash Redis REST token | `""` |
+| `GEMINI_API_KEY` | Optional | Secondary fallback provider key | `""` |
+| `PORT` | Optional | Server port | `3000` |
+
+*\*Note: If external API keys are omitted, UniMatch NG automatically switches into its built-in demonstration advisory mode, ensuring the app remains 100% interactive and testable out of the box.*
 
 ---
 
-## Installation & Local Execution
+## 🚀 Local Development
 
-### 1. Install Dependencies
+### 1. Prerequisites
+- Node.js $\ge 20.x$
+- npm or pnpm
+
+### 2. Installation
 ```bash
+git clone https://github.com/victor-s-napoleon/unimatch-ng.git
+cd unimatch-ng
 npm install
 ```
 
-### 2. Run Test Suite
-UniMatch NG includes strict unit tests verifying scoring weights, Roman numeral conversion, WAEC credit logic, cache hashing, and schema safety:
+### 3. Run Unit Tests
+UniMatch NG includes test suites for deterministic scoring weights, Roman numerals, WAEC credit logic, cache hashing, and Zod schemas:
 ```bash
 npm test
 ```
 
-### 3. Start Development Server
+### 4. Start Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Navigate to [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## Production Build & Deployment
+## 🌐 Deploying to Vercel
 
-### Build for Production
-```bash
-npm run build
-```
-
-### Run Full-Stack Node Server
-```bash
-npm start
-```
-
-### Deploying to Vercel
-UniMatch NG is configured out of the box for Vercel with Serverless API routing:
-1. Push your repository to GitHub (or deploy via Vercel CLI).
-2. Import the repository in [Vercel](https://vercel.com).
-3. Framework Preset: **Vite**.
-4. Configure your Environment Variables in the Vercel Project Settings:
-   - `BACKBOARD_API_KEY`: Your Backboard API Key
-   - `BACKBOARD_BASE_URL`: `https://app.backboard.io/api`
-   - `BACKBOARD_MODEL_NAME`: `gemma-4`
-   - `CACHE_TTL_DAYS`: `7`
-5. The included `vercel.json` and `/api/index.ts` automatically wire all `/api/*` endpoints to Vercel Serverless Functions and serve the built Vite SPA from `dist`.
+UniMatch NG is configured with Vercel Serverless Function routing:
+1. Push your repository to GitHub.
+2. Import the project in [Vercel](https://vercel.com).
+3. Select **Vite** as the Framework Preset.
+4. Set Build Command to `npm run build` and Output Directory to `dist`.
+5. In **Project Settings → Environment Variables**, add your `BACKBOARD_API_KEY` (and optionally `CACHE_TTL_DAYS`).
+6. Deploy! The included `vercel.json` and `/api/index.ts` automatically mount all `/api/*` endpoints serverlessly.
 
 ---
 
-## Project Structure
+## 🧪 Quality & Verification
 
-```
-├── /src
-│   ├── /components
-│   │   ├── Crest.tsx                 # Monogram crest ("UM" brass & bottle green)
-│   │   ├── Navbar.tsx                # Heritage navigation bar
-│   │   ├── LandingHero.tsx           # Prospectus hero & process steps
-│   │   ├── ProfileForm.tsx           # Multi-step candidate dossier (Steps I-IV)
-│   │   ├── RecommendationsView.tsx   # 10 ranked cards with Roman numerals & filters
-│   │   ├── UniversityDetailModal.tsx # Live detail dossier with fees in Naira
-│   │   ├── ShortlistView.tsx         # Side-by-side ledger, notes, PDF & JSON export
-│   │   ├── CounsellorChatBox.tsx     # Session-persistent counsellor chat
-│   │   ├── SkeletonCard.tsx          # Themed parchment skeleton loader
-│   │   └── Footer.tsx                # Academic integrity notice & NUC / JAMB disclaimer
-│   ├── /lib
-│   │   ├── /schemas/index.ts         # Zod schemas for forms, recommendations, details
-│   │   ├── /scoring/index.ts         # Deterministic 100-point scoring & WAEC analysis
-│   │   ├── /cache/index.ts           # SHA-256 keying, Upstash Redis & in-memory cache
-│   │   ├── /backboard/index.ts       # Typed Backboard client with retry & thread session
-│   │   ├── /prompts/index.ts         # Prompt templates and versioning
-│   │   ├── /fallback/index.ts        # Static fallback registry of Nigerian universities
-│   │   ├── client-storage.ts         # Versioned client-side storage ("unimatch_v1_")
-│   │   └── utils.ts                  # Clean fences, slugify, and formatNaira
-│   ├── App.tsx                       # Main application shell
-│   ├── index.css                     # Tailwind v4 theme, fonts, and print stylesheet
-│   └── main.tsx                      # Client entry point
-├── /test
-│   └── scoring.test.ts               # Unit tests
-├── server.ts                         # Express server with Vite middleware & rate limiter
-├── index.html                        # Heritage HTML document with Google Fonts
-└── package.json
-```
+- **Strict TypeScript:** No `any` types; Zod schemas shared across client and server.
+- **Accessibility:** High contrast ratios, full keyboard navigation, explicit focus rings, and screen-reader accessible form controls.
+- **Resilience:** Graceful offline reads via versioned client storage (`"unimatch_v1_"`), loading skeletons, and dual-layer caching.
 
 ---
 
-## Academic Disclaimer
-UniMatch NG is an admissions advisory platform. All cutoff benchmarks, probability metrics, and tuition fee schedules are AI-assisted estimates. Candidates must confirm official requirements on the JAMB CAPS portal (`jamb.gov.ng`) and the respective institution's admissions registry.
+## 📜 Licenses & Disclaimers
+
+- **Application Source Code:** Released under the **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)**.
+- **Foundation AI Model:** Powered by Google's Gemma models, subject to the **[Gemma Terms of Use](https://ai.google.dev/gemma/terms)**.
+- **Academic Disclaimer:** All cut-off marks, probability metrics, and tuition fee schedules are AI-assisted advisory estimations. Aspiring scholars must verify formal admissions circulars directly on the official JAMB Central Admissions Processing System (CAPS) portal (`jamb.gov.ng`) and respective institutional websites.
+
+---
+
+*Crafted with pride for aspiring Nigerian undergraduates and the MLH Hacktoberfest Open-Weight AI community.*
