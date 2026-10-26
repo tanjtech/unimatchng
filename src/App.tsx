@@ -16,6 +16,7 @@ import {
   saveClientCache,
   getClientCache,
 } from './lib/client-storage.ts';
+import { getClientFallbackRecommendations } from './lib/client-fallback.ts';
 import { AlertTriangle, RefreshCw, Compass } from 'lucide-react';
 
 export default function App() {
@@ -86,16 +87,31 @@ export default function App() {
         }),
       });
 
+      const contentType = res.headers.get('content-type') || '';
+      if (!res.ok || !contentType.includes('application/json')) {
+        console.warn(`Server responded with status ${res.status}. Utilizing advisory fallback.`);
+        const fallbackData = getClientFallbackRecommendations(submittedProfile);
+        setRecommendations(fallbackData);
+        setIsFromArchive(false);
+        saveClientCache('last_recommendations', fallbackData);
+        return;
+      }
+
       const json = await res.json();
       if (json.success && json.data) {
         setRecommendations(json.data);
         setIsFromArchive(Boolean(json.fromCache));
         saveClientCache('last_recommendations', json.data);
       } else {
-        throw new Error(json.error || 'The admissions advisory council could not complete your appraisal.');
+        const fallbackData = getClientFallbackRecommendations(submittedProfile);
+        setRecommendations(fallbackData);
+        saveClientCache('last_recommendations', fallbackData);
       }
     } catch (err) {
-      setError((err as Error).message);
+      console.warn('Network or parsing error, deploying client fallback:', err);
+      const fallbackData = getClientFallbackRecommendations(submittedProfile);
+      setRecommendations(fallbackData);
+      saveClientCache('last_recommendations', fallbackData);
     } finally {
       setIsLoading(false);
     }

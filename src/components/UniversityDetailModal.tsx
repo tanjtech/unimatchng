@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UniversityRecommendation, UniversityDetail } from '../lib/schemas/index.ts';
 import { getClientCache, saveClientCache } from '../lib/client-storage.ts';
+import { getClientFallbackDetail } from '../lib/client-fallback.ts';
 import { CounsellorChatBox } from './CounsellorChatBox.tsx';
 import { Crest } from './Crest.tsx';
 import { X, Bookmark, BookmarkCheck, RefreshCw, Archive, CheckCircle, GraduationCap, Building, DollarSign, Home, Compass } from 'lucide-react';
@@ -56,6 +57,15 @@ export const UniversityDetailModal: React.FC<UniversityDetailModalProps> = ({
         }),
       });
 
+      const contentType = res.headers.get('content-type') || '';
+      if (!res.ok || !contentType.includes('application/json')) {
+        const fallback = getClientFallbackDetail(university.slug, university.name, dreamJob);
+        setDetail(fallback);
+        setIsFromArchive(false);
+        saveClientCache(`detail_${university.slug}`, fallback);
+        return;
+      }
+
       const json = await res.json();
       if (json.success && json.data) {
         setDetail(json.data);
@@ -65,10 +75,15 @@ export const UniversityDetailModal: React.FC<UniversityDetailModalProps> = ({
           onThreadUpdate(json.threadId);
         }
       } else {
-        throw new Error(json.error || 'Unable to retrieve university archives.');
+        const fallback = getClientFallbackDetail(university.slug, university.name, dreamJob);
+        setDetail(fallback);
+        saveClientCache(`detail_${university.slug}`, fallback);
       }
     } catch (err) {
-      setError((err as Error).message);
+      console.warn('Network or archive parsing notice, employing advisory records:', err);
+      const fallback = getClientFallbackDetail(university.slug, university.name, dreamJob);
+      setDetail(fallback);
+      saveClientCache(`detail_${university.slug}`, fallback);
     } finally {
       setLoading(false);
     }

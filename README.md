@@ -94,10 +94,16 @@ npm start
 ```
 
 ### Deploying to Vercel
-1. Push your repository to GitHub.
+UniMatch NG is configured out of the box for Vercel with Serverless API routing:
+1. Push your repository to GitHub (or deploy via Vercel CLI).
 2. Import the repository in [Vercel](https://vercel.com).
-3. Configure your Environment Variables (`BACKBOARD_API_KEY`, `BACKBOARD_MODEL_NAME`, `CACHE_TTL_DAYS`).
-4. Set Build Command to `npm run build` and Output Directory to `dist`.
+3. Framework Preset: **Vite**.
+4. Configure your Environment Variables in the Vercel Project Settings:
+   - `BACKBOARD_API_KEY`: Your Backboard API Key
+   - `BACKBOARD_BASE_URL`: `https://app.backboard.io/api`
+   - `BACKBOARD_MODEL_NAME`: `gemma-4`
+   - `CACHE_TTL_DAYS`: `7`
+5. The included `vercel.json` and `/api/index.ts` automatically wire all `/api/*` endpoints to Vercel Serverless Functions and serve the built Vite SPA from `dist`.
 
 ---
 

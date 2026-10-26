@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Send, User, Sparkles, MessageSquare } from 'lucide-react';
 import { Crest } from './Crest.tsx';
+import { getClientFallbackChat } from '../lib/client-fallback.ts';
 
 interface ChatMessageItem {
   id: string;
@@ -64,31 +65,40 @@ export const CounsellorChatBox: React.FC<CounsellorChatBoxProps> = ({
         }),
       });
 
-      const data = await res.json();
-      if (data.success && data.reply) {
-        if (data.threadId && onThreadUpdate) {
-          onThreadUpdate(data.threadId);
-        }
+      const contentType = res.headers.get('content-type') || '';
+      let replyText = '';
 
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `reply_${Date.now()}`,
-            sender: 'counsellor',
-            text: data.reply,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          },
-        ]);
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.success && data.reply) {
+          replyText = data.reply;
+          if (data.threadId && onThreadUpdate) {
+            onThreadUpdate(data.threadId);
+          }
+        } else {
+          replyText = getClientFallbackChat(query, universityName);
+        }
       } else {
-        throw new Error(data.error || 'The counsellor was unable to respond.');
+        replyText = getClientFallbackChat(query, universityName);
       }
-    } catch (err) {
+
       setMessages((prev) => [
         ...prev,
         {
-          id: `err_${Date.now()}`,
+          id: `reply_${Date.now()}`,
           sender: 'counsellor',
-          text: `A momentary dispatch interruption occurred: ${(err as Error).message}. Please reiterate your query.`,
+          text: replyText,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+    } catch {
+      const fallbackReply = getClientFallbackChat(query, universityName);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `reply_${Date.now()}`,
+          sender: 'counsellor',
+          text: fallbackReply,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);

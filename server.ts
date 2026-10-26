@@ -241,7 +241,13 @@ async function startServer() {
   });
 }
 
-startServer().catch((err) => {
-  console.error('Fatal server boot failure:', err);
-  process.exit(1);
-});
+// Only run standalone listener when not in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+  startServer().catch((err) => {
+    console.error('Fatal server boot failure:', err);
+    process.exit(1);
+  });
+}
+
+export default app;
+
